@@ -3,7 +3,7 @@ use strict;
 
 our @ISA = qw(BBDB::Export);
 
-our $VERSION = do { my @r=(q$Revision: 1.2 $=~/\d+/g);  sprintf "%d."."%03d"x$#r,@r };
+our $VERSION = do { my @r=(q$Revision: 0.2 $=~/\d+/g);  sprintf "%d."."%03d"x$#r,@r };
 
 use Data::Dumper;
 use Text::vFile::asData;

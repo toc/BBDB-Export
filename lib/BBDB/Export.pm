@@ -2,7 +2,7 @@ package BBDB::Export;
 use strict;
 
 #
-#_* $Id: Export.pm,v 0.11 2005/03/07 01:46:10 wu Exp $
+#_* $Id: Export.pm,v 0.12 2005/03/11 00:00:53 wu Exp $
 #
 
 #
@@ -10,7 +10,7 @@ use strict;
 #
 
 # version fu from http://search.cpan.org/~jhi/perl-5.8.0/pod/perlmod.pod
-our $VERSION = do { my @r=(q$Revision: 0.11 $=~/\d+/g);  sprintf "%d."."%03d"x$#r,@r };
+our $VERSION = do { my @r=(q$Revision: 0.12 $=~/\d+/g);  sprintf "%d."."%03d"x$#r,@r };
 
 #
 #_* Config
@@ -266,17 +266,47 @@ BBDB::Export - export data from The Insidious Big Brother Database.
 
   use BBDB::Export;
 
-  # Export classes include LDAP, LDIF, and MailAliases
-  my $exporter = BBDB::Export->new(
-                                   "BBDB::Export::InsertSubClassNameHere"
-                                 {
-                                   bbdb_file   => "t/cases/$case.bbdb",
-                                   output_file => "/Users/wu/.mail_aliases",
-                                 }
-                                  );
+  # export to LDIF
+  my $exporter = BBDB::Export::LDIF->new(
+                                         {
+                                          bbdb_file   => "/path/to/.bbdb",
+                                          output_file => "export.ldif",
+                                          dc          => "dc=geekfarm, dc=org",
+                                         }
+                                          );
+  $exporter->export();
 
-  # running export() causes the output_file to be generated
-  my ( $aliases_got ) = $exporter->export();
+  # sync with ldap via ldapadd and ldapdelete
+  my $exporter = BBDB::Export::LDAP->new(
+                                         {
+                                          bbdb_file   => "/path/to/.bbdb",
+                                          output_file => "/tmp/tempfile",
+                                          dc          => "dc=geekfarm, dc=org",
+                                          ldappass    => "supersecret",
+                                         }
+                                          );
+
+  $exporter->export();
+
+  # export to vcards
+  my $exporter = BBDB::Export::vCard->new(
+                                          {
+                                           bbdb_file   => "/path/to/.bbdb",
+                                           output_dir  => "/some/path/",
+                                          }
+                                           );
+
+  $exporter->export();
+
+  # create .mail_aliases
+  my $exporter = BBDB::Export::MailAliases->new(
+                                                {
+                                                 bbdb_file   => "/path/to/.bbdb",
+                                                 output_file => ".mail_aliases",
+                                                }
+                                                 );
+
+  $exporter->export();
 
 
 =head1 DESCRIPTION
@@ -286,14 +316,12 @@ of formats, and also to make it easy to write new modules to export to
 new formats.  Current export options include building an LDIF, vCard,
 or .mail_aliases, and automatically updating an ldap server.
 
-BBDB::Export should not be used directly.  Use any of the available
-subclasses using the example above.  See documentation in the
-subclasses for additional options that should or can be set.
-
 For a fully functional command line converter, see the bbdb-export
 script that comes with this module.
 
-For more examples of using BBDB::Export, see the test cases.
+BBDB::Export should not be used directly.  Use any of the available
+subclasses using the examples above.  For more examples of using
+BBDB::Export, see the test cases.
 
 =head1 EXTENDING
 

@@ -3,7 +3,7 @@ use strict;
 
 our @ISA = qw(BBDB::Export);
 
-our $VERSION = do { my @r=(q$Revision: 0.1 $=~/\d+/g);  sprintf "%d."."%03d"x$#r,@r };
+our $VERSION = do { my @r=(q$Revision: 0.3 $=~/\d+/g);  sprintf "%d."."%03d"x$#r,@r };
 
 use Data::Dumper;
 
@@ -37,16 +37,15 @@ sub process_record
         $nick =~ s|\s.*$||;
         $nick .= substr( $record->{'last'}, 0, 1 );
     }
-    elsif ( $record->{'first'} )
-    {
-        # use first name for nick
-        $nick = $record->{'first'};
-        $nick =~ s|\s.*$||;
-    }
     elsif ( $record->{'last'} )
     {
         # use last name for nick
         $nick = $record->{'last'}
+    }
+    elsif ( $record->{'first'} )
+    {
+        # use first name for nick
+        $nick = $record->{'first'};
     }
 
     # acceptable characters
