@@ -2,7 +2,7 @@ package BBDB::Export;
 use strict;
 
 #
-#_* $Id: Export.pm,v 0.10 2005/03/07 01:27:51 wu Exp $
+#_* $Id: Export.pm,v 0.11 2005/03/07 01:46:10 wu Exp $
 #
 
 #
@@ -10,7 +10,7 @@ use strict;
 #
 
 # version fu from http://search.cpan.org/~jhi/perl-5.8.0/pod/perlmod.pod
-our $VERSION = do { my @r=(q$Revision: 0.10 $=~/\d+/g);  sprintf "%d."."%03d"x$#r,@r };
+our $VERSION = do { my @r=(q$Revision: 0.11 $=~/\d+/g);  sprintf "%d."."%03d"x$#r,@r };
 
 #
 #_* Config
@@ -260,8 +260,7 @@ __END__
 
 =head1 NAME
 
-BBDB::Export - Modular perl library to export data from emacs big
-brother database.
+BBDB::Export - export data from The Insidious Big Brother Database.
 
 =head1 SYNOPSIS
 
@@ -284,7 +283,8 @@ brother database.
 
 This module was designed to export to your bbdb data to a wide array
 of formats, and also to make it easy to write new modules to export to
-new formats.
+new formats.  Current export options include building an LDIF, vCard,
+or .mail_aliases, and automatically updating an ldap server.
 
 BBDB::Export should not be used directly.  Use any of the available
 subclasses using the example above.  See documentation in the
