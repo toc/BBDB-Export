@@ -31,6 +31,8 @@ DEPENDENCIES
 This module requires these other modules and libraries:
 
   BBDB
+  Text::ANSIColor
+  Pod::Usage
 
 AUTHOR
 

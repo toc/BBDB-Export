@@ -2,7 +2,7 @@ package BBDB::Export;
 use strict;
 
 #
-#_* $Id: Export.pm,v 0.9 2005/03/06 02:12:10 wu Exp $
+#_* $Id: Export.pm,v 0.10 2005/03/07 01:27:51 wu Exp $
 #
 
 #
@@ -10,7 +10,7 @@ use strict;
 #
 
 # version fu from http://search.cpan.org/~jhi/perl-5.8.0/pod/perlmod.pod
-our $VERSION = do { my @r=(q$Revision: 0.9 $=~/\d+/g);  sprintf "%d."."%03d"x$#r,@r };
+our $VERSION = do { my @r=(q$Revision: 0.10 $=~/\d+/g);  sprintf "%d."."%03d"x$#r,@r };
 
 #
 #_* Config
@@ -377,6 +377,5 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
 
 =cut

@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# $Id: bbdb-export,v 0.5 2005/03/05 20:25:38 wu Exp $
+# $Id: bbdb-export,v 0.6 2005/03/07 01:24:29 wu Exp $
 #
 
 #
@@ -10,7 +10,7 @@
 #
 use strict;
 
-our $VERSION = do { my @r=(q$Revision: 0.5 $=~/\d+/g);  sprintf "%d."."%03d"x$#r,@r };
+our $VERSION = do { my @r=(q$Revision: 0.6 $=~/\d+/g);  sprintf "%d."."%03d"x$#r,@r };
 
 #
 #_* config
@@ -95,6 +95,21 @@ elsif ( $opt_ldap )
     print "Exporting...\n";
     $exporter->export();
 }
+elsif ( $opt_vcard )
+{
+    require BBDB::Export::vCard;
+
+    print "Initializing...\n";
+    my $exporter = BBDB::Export::vCard->new(
+                                          {
+                                           bbdb_file   => $bbdb_file,
+                                           output_dir  => $opt_outfile,
+                                          }
+                                           );
+
+    print "Exporting...\n";
+    $exporter->export();
+}
 elsif ( $opt_mailaliases )
 {
     require BBDB::Export::MailAliases;
@@ -155,16 +170,18 @@ Create a .mail_aliases file, useful for clients such as mutt.
 
 =item -vcard
 
-Create vcards.  Not implemented yet.
+Create vcards.  The -out param controls the directory where the vCards
+should be written.
 
 =item -bbdb
 
 Specify location of .bbdb file.
 
-=item -outfile
+=item -out
 
-Specify location of file to create.  If using -ldap, this is a just a
-temporary file.
+Specify location of file to be created.  If using -vCards, the
+directory where vcards should be written.  If using -ldap, this is a
+just a temporary file.
 
 =item -help
 

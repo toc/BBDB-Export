@@ -1,6 +1,6 @@
 # -*- mode: perl; -*-
 
-use Test::More tests => 21;
+use Test::More tests => 28;
 
 use BBDB;
 use BBDB::Export;
@@ -78,18 +78,18 @@ for my $case ( qw( aka company net notes phone simple title ) )
     #
     # check vCard exporter
     #
-#     my $vcard = BBDB::Export::vCard->new(
-#                                        {
-#                                         bbdb_file   => $test_bbdb,
-#                                        }
-#                                         );
-#
-#     my ( $vcard_got ) = $vcard->export();
-#     is_deeply(
-#               [ split /\n/, $vcard_got                         ],
-#               [ split /\n/, read_file( "t/testcases/$case.vcf" ) ],
-#               "$case - vcard export"
-#                );
+    my $vcard = BBDB::Export::vCard->new(
+                                       {
+                                        bbdb_file   => $test_bbdb,
+                                       }
+                                        );
+
+    my ( $vcard_got ) = $vcard->export();
+    is_deeply(
+              [ split /\n/, $vcard_got                         ],
+              [ split /\n/, read_file( "t/testcases/$case.vcf" ) ],
+              "$case - vcard export"
+               );
 
 }
 

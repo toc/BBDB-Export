@@ -1,3 +1,6 @@
+0.010  Sun Mar  6 19:26:16 CST 2005
+    - now creates vCards
+
 0.009  Sat Mar  5 20:11:00 CST 2005
     - remove FreezeThaw from test cases - no longer used
 
