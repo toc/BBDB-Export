@@ -1,0 +1,11 @@
+dn: cn=test case, ou=addressbook, dc=geekfarm, dc=org
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: test case
+givenName: test
+sn: case
+ou: addressbook
+mail: test@domain.com
+title: acme inc

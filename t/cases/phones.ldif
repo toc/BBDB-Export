@@ -1,0 +1,15 @@
+dn: cn=test case, ou=addressbook, dc=geekfarm, dc=org
+objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+cn: test case
+givenName: test
+sn: case
+ou: addressbook
+telephoneNumber: (333) 333-3333
+homePhone: (222) 222-2222
+mobile: (555) 555-5555
+pager: (444) 444-4444
+facsimileTelephoneNumber: (666) 666-6666
+title: acme inc
