@@ -7,7 +7,6 @@ use BBDB::Export;
 use BBDB::Export::LDIF;
 use BBDB::Export::MailAliases;
 use BBDB::Export::vCard;
-use FreezeThaw qw(freeze thaw);
 use Data::Dumper;
 
 for my $case ( qw( aka company net notes phone simple title ) )

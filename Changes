@@ -1,3 +1,6 @@
+0.009  Sat Mar  5 20:11:00 CST 2005
+    - remove FreezeThaw from test cases - no longer used
+
 0.008  Sat Mar  5 15:14:00 CST 2005
     - added README
 

@@ -2,21 +2,7 @@ package BBDB::Export;
 use strict;
 
 #
-#_* $Id: Export.pm,v 0.8 2005/03/05 21:15:34 wu Exp $
-#
-#
-#
-#_* To Do
-#
-# user customizable field mapping
-# log4perl - optional
-# more test cases
-# New Formats
-#   vCard support
-#   write to csv
-#   write to sql database
-#   xml
-#   other formats? - http://www.emacswiki.org/cgi-bin/wiki/BbdbExporters
+#_* $Id: Export.pm,v 0.9 2005/03/06 02:12:10 wu Exp $
 #
 
 #
@@ -24,7 +10,7 @@ use strict;
 #
 
 # version fu from http://search.cpan.org/~jhi/perl-5.8.0/pod/perlmod.pod
-our $VERSION = do { my @r=(q$Revision: 0.8 $=~/\d+/g);  sprintf "%d."."%03d"x$#r,@r };
+our $VERSION = do { my @r=(q$Revision: 0.9 $=~/\d+/g);  sprintf "%d."."%03d"x$#r,@r };
 
 #
 #_* Config
