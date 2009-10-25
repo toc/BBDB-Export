@@ -1,16 +1,9 @@
 package BBDB::Export;
 use strict;
+use warnings;
 
-#
-#_* $Id: Export.pm,v 0.12 2005/03/11 00:00:53 wu Exp $
-#
+our $VERSION = '0.015';
 
-#
-#_* Version
-#
-
-# version fu from http://search.cpan.org/~jhi/perl-5.8.0/pod/perlmod.pod
-our $VERSION = do { my @r=(q$Revision: 0.12 $=~/\d+/g);  sprintf "%d."."%03d"x$#r,@r };
 
 #
 #_* Config
@@ -123,24 +116,6 @@ sub get_record_hash
 
 
 #
-#_* format_field
-#
-sub format_field
-{
-    my ( $self, $name, $value ) = @_;
-
-    return unless ( $name && $value );
-
-    $name  =~ s|^\s+||g;
-    $name  =~ s|\s+$||g;
-    $value =~ s|^\s+||g;
-    $value =~ s|[\s\,]+$||g;
-
-    return "$name: $value\n";
-
-}
-
-#
 #_* export
 #
 sub export
@@ -230,10 +205,10 @@ sub run_command
 
     $self->verbose("COMMAND: $command");
 
-    open( RUN, "$command 2>&1 |" );
-    my $out = join( "\n", <RUN> );
+    open( my $run_fh, "-|", "$command 2>&1" );
+    my $out = join( "\n", <$run_fh> );
 
-    if ( close RUN )
+    if ( close $run_fh )
     {
         if ( $self->{'verbose'} )
         {
@@ -255,12 +230,17 @@ sub run_command
     }
 }
 
+
 1;
 __END__
 
 =head1 NAME
 
 BBDB::Export - export data from The Insidious Big Brother Database.
+
+=head1 VERSION
+
+version 0.015
 
 =head1 SYNOPSIS
 
@@ -327,7 +307,7 @@ BBDB::Export, see the test cases.
 
 When writing a new class, you can define the following subroutines:
 
-=over 4
+=over 8
 
 =item get_record_hash
 
@@ -351,6 +331,33 @@ per record, write the current record to a file in this method.
 run any processing that needs to be done after all records have been
 processed.  For example, if you are creating one file containing all
 records, write the file in this method.
+
+=back
+
+=head1 SUBROUTINES/METHODS
+
+=over 8
+
+=item new
+
+=item export
+
+=item run_command
+
+run an external command, e.g. ldapadd
+
+=item $obj->info( @lines )
+
+report informational messages to the user.
+
+=item $obj->error( @lines )
+
+report error messages to the user.
+
+=item $obj->verbose( @lines )
+
+report debugging info to user.  this information will only be
+displayed if verbose output is enabled.
 
 =back
 

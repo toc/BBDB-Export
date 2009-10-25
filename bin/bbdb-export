@@ -10,7 +10,8 @@
 #
 use strict;
 
-our $VERSION = do { my @r=(q$Revision: 0.6 $=~/\d+/g);  sprintf "%d."."%03d"x$#r,@r };
+our $VERSION = '0.015';
+
 
 #
 #_* config
@@ -140,6 +141,10 @@ __END__
 =head1 NAME
 
  bbdb-export - export emacs bbdb info to ldif, or update in ldap.
+
+=head1 VERSION
+
+version 0.015
 
 =head1 SYNOPSIS
 

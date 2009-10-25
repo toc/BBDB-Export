@@ -1,9 +1,11 @@
 package BBDB::Export::MailAliases;
 use strict;
+use warnings;
+
+our $VERSION = '0.015';
+
 
 our @ISA = qw(BBDB::Export);
-
-our $VERSION = do { my @r=(q$Revision: 0.3 $=~/\d+/g);  sprintf "%d."."%03d"x$#r,@r };
 
 use Data::Dumper;
 
@@ -70,9 +72,9 @@ sub post_processing
     my $outfile = $self->{'data'}->{'output_file'};
     return unless $outfile;
 
-    open ( OUT, ">$outfile" ) or die "Unable to create $outfile";
-    print OUT $output;
-    close OUT;
+    open ( my $out_fh, ">", $outfile ) or die "Unable to create $outfile";
+    print $out_fh $output;
+    close $out_fh;
 
     $self->info( "Exported mail_aliases data to $outfile" );
 }

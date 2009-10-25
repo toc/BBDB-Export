@@ -1,9 +1,11 @@
 package BBDB::Export::LDIF;
 use strict;
+use warnings;
+
+our $VERSION = '0.015';
+
 
 our @ISA = qw(BBDB::Export);
-
-our $VERSION = do { my @r=(q$Revision: 0.5 $=~/\d+/g);  sprintf "%d."."%03d"x$#r,@r };
 
 use Data::Dumper;
 
@@ -20,7 +22,7 @@ sub get_record_hash
     unless ( $record->{'first'} || $record->{'last'} )
     {
         $self->error( "No first or last name for record" );
-        return undef;
+        return;
     }
 
     # add some custom fields to the hash
@@ -98,12 +100,12 @@ sub process_record
         {
             for my $index ( 0 .. $#{ $record->{ $field } } )
             {
-                $return .= $self->format_field( $field, $record->{ $field }->[$index] );
+                $return .= $self->_format_field( $field, $record->{ $field }->[$index] );
             }
         }
         else
         {
-            $return .= $self->format_field( $field, $record->{ $field } );
+            $return .= $self->_format_field( $field, $record->{ $field } );
         }
     }
 
@@ -118,6 +120,25 @@ sub process_record
     $return .= "\n\n";
 
     return ( $return, $data );
+
+}
+
+
+#
+#_* _format_field
+#
+sub _format_field
+{
+    my ( $self, $name, $value ) = @_;
+
+    return unless ( $name && $value );
+
+    $name  =~ s|^\s+||g;
+    $name  =~ s|\s+$||g;
+    $value =~ s|^\s+||g;
+    $value =~ s|[\s\,]+$||g;
+
+    return "$name: $value\n";
 
 }
 
@@ -143,9 +164,9 @@ sub post_processing
         return "";
     }
 
-    open ( OUT, ">$outfile" ) or die "Unable to create $outfile";
-    print OUT $output;
-    close OUT;
+    open ( my $out_fh, ">", $outfile ) or die "Unable to create $outfile";
+    print $out_fh $output;
+    close $out_fh;
 
     $self->info( "Exported LDIF data to $outfile" );
 

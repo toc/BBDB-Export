@@ -1,11 +1,13 @@
 package BBDB::Export::LDAP;
 use strict;
+use warnings;
+
+our $VERSION = '0.015';
+
 
 use BBDB::Export::LDIF;
 
 our @ISA = qw(BBDB::Export);
-
-our $VERSION = do { my @r=(q$Revision: 0.1 $=~/\d+/g);  sprintf "%d."."%03d"x$#r,@r };
 
 use Data::Dumper;
 
@@ -26,11 +28,11 @@ sub process_record
     my $dc = $self->{'data'}->{'dc'};
     return unless $dc;
 
-    open ( OUT, ">$tmpfile" ) or die "Unable to create temp file $tmpfile";
+    open ( my $out_fh, ">", $tmpfile ) or die "Unable to create temp file $tmpfile";
 
-    print OUT $text;
+    print $out_fh $text;
 
-    close OUT;
+    close $out_fh;
 
     my $dn = $data->{'dn'};
 

@@ -1,19 +1,24 @@
-use 5.008001;
+
+use strict;
+use warnings;
+
 use ExtUtils::MakeMaker;
-# See lib/ExtUtils/MakeMaker.pm for details of how to influence
-# the contents of the Makefile that is written.
+
 WriteMakefile(
-              NAME              => 'BBDB::Export',
-              VERSION_FROM      => 'lib/BBDB/Export.pm',
-              EXE_FILES         => [ qw[ bin/bbdb-export ] ],
-              PREREQ_PM         => {
-                                    'BBDB'                => 0,
-                                    'Term::ANSIColor'     => 0,
-                                    'Pod::Usage'          => 0,
-                                    'Test::More'          => 0,
-                                    'Text::vFile::asData' => 0,
-                                   },
-              ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
-               (ABSTRACT_FROM  => 'lib/BBDB/Export.pm', # retrieve abstract from module
-                AUTHOR         => 'wu <VVu@geekfarm.org>') : ()),
+  DISTNAME  => 'BBDB-Export',
+  NAME      => 'BBDB::Export',
+  AUTHOR    => 'Alex\ White\ \<VVu\@geekfarm\.org\>',
+  ABSTRACT  => 'export\ data\ from\ The\ Insidious\ Big\ Brother\ Database\.',
+  VERSION   => '0.015',
+  EXE_FILES => [ qw(bin/bbdb-export) ],
+  (eval { ExtUtils::MakeMaker->VERSION(6.31) } ? (LICENSE => 'bsd') : ()),
+  PREREQ_PM    => {
+    "Test::More" => '0',
+    "Term::ANSIColor" => '0',
+    "Data::Dumper" => '0',
+    "BBDB" => '0',
+    "Text::vFile::asData" => '0',
+  },
+  test => {TESTS => 't/*.t'}
 );
+
