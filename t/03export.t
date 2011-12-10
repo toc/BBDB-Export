@@ -1,10 +1,11 @@
 # -*- mode: perl; -*-
 
-use Test::More tests => 32;
+use Test::More tests => 40;
 
 use BBDB;
 use BBDB::Export;
 use BBDB::Export::LDIF;
+use BBDB::Export::OLCSV;
 use BBDB::Export::MailAliases;
 use BBDB::Export::vCard;
 use Data::Dumper;
@@ -73,6 +74,25 @@ for my $case ( qw( aka company net notes phone phone2 simple title ) )
               [ split /\n/, $ldif_got                         ],
               [ split /\n/, read_file( "t/testcases/$case.ldif" ) ],
               "$case - ldif export"
+               );
+
+    #
+    # check OLCSV exporter
+    #
+    my $olcsv = BBDB::Export::OLCSV->new(
+                                     {
+                                      bbdb_file   => $test_bbdb,
+                                      dc          => "dc=geekfarm, dc=org",
+                                      quiet       => 1,
+                                     }
+                                      );
+
+
+    my ( $olcsv_got ) = $olcsv->export();
+    is_deeply(
+              [ split /\n/, $olcsv_got                         ],
+              [ split /\n/, read_file( "t/testcases/$case.olcsv" ) ],
+              "$case - olcsv export"
                );
 
     #

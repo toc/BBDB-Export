@@ -109,6 +109,10 @@ sub get_record_hash
         }
     }
 
+    # timestamps
+    $record->{'creation-date'} = $record->note_by_name('creation-date');
+    $record->{'timestamp'} = $record->note_by_name('timestamp');
+
     return \%record;
 }
 
