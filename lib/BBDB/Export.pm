@@ -73,20 +73,22 @@ sub get_record_hash
         for my $phone ( @{ $data->[4] } )
         {
             my $loc = $phone->[0];
-
-            my @numbers = @{ $phone->[1] };
-            pop @numbers;
-
             my $number;
 
-            if ( $#numbers == 2 )
-            {
-                $number = "(" . $numbers[0] . ") " . $numbers[1] . "-" . $numbers[2];
-            }
-            else
-            {
+	    if (ref($phone->[1]) eq "ARRAY") {	  # US Style
+	      my @numbers = @{ $phone->[1] };
+	      pop @numbers;
+
+	      if ( $#numbers == 2 ) {
+		$number = "(" . $numbers[0] . ") " . $numbers[1] . "-" . $numbers[2];
+	      } else {
                 $number = join( "-", @numbers );
-            }
+	      }
+	    } else {				  # International Style
+	      # Set default value
+	      #$number = "Cannot convert from BBDB";
+	      $number = $phone->[1];		  # STRING expected
+	    }
 
             $record{'phone'}->{ $loc } = $number;
         }

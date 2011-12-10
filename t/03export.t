@@ -1,6 +1,6 @@
 # -*- mode: perl; -*-
 
-use Test::More tests => 28;
+use Test::More tests => 32;
 
 use BBDB;
 use BBDB::Export;
@@ -9,7 +9,7 @@ use BBDB::Export::MailAliases;
 use BBDB::Export::vCard;
 use Data::Dumper;
 
-for my $case ( qw( aka company net notes phone simple title ) )
+for my $case ( qw( aka company net notes phone phone2 simple title ) )
 {
     my $test_bbdb = "t/testcases/$case.bbdb";
 
