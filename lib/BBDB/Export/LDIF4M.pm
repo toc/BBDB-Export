@@ -55,13 +55,18 @@ sub get_record_hash
 
     # Phone
     if ( $record->{'phone'} )
-    {
-        $record->{'telephoneNumber'}          = $record->{'phone'}->{'Office'};
-        $record->{'homePhone'}                = $record->{'phone'}->{'Home'};
-        $record->{'mobile'}                   = $record->{'phone'}->{'HP'};
-        $record->{'pager'}                    = $record->{'phone'}->{'pager'};
-        $record->{'facsimileTelephoneNumber'} = $record->{'phone'}->{'fax'};
-    }
+      {
+	$record->{'telephoneNumber'} =
+	  $record->{'phone'}->{'Office'} || $record->{'phone'}->{'work'};
+	$record->{'homePhone'} =
+	  $record->{'phone'}->{'Home'} || $record->{'phone'}->{'home'};
+	$record->{'mobile'} =
+	  $record->{'phone'}->{'HP'} || $record->{'phone'}->{'mobile'};
+	$record->{'pager'} =
+	  $record->{'phone'}->{'pager'};
+	$record->{'facsimileTelephoneNumber'} =
+	  $record->{'phone'}->{'Fax'} || $record->{'phone'}->{'fax'};
+      }
 
 
     # title
