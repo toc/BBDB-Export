@@ -116,7 +116,7 @@ sub post_processing
 
     unless ( $output )
     {
-        $self->error( "No text to export to LDIF" );
+        $self->error( "No text to export to CSV" );
         return "";
     }
 
@@ -139,7 +139,7 @@ sub post_processing
 
     close OUT;
 
-    $self->info( "Exported LDIF data to $outfile" );
+    $self->info( "Exported CSV data to $outfile" );
 
     return $output;
 }

@@ -1,0 +1,127 @@
+#! perl
+; my $rcs_id = q$Id: template.pl 69 2001-10-25 15:24:01Z toshiaki $;
+; my $rcs_ver = "0.$1" if q$Revision: 1.3 $ =~ /Revision:\s*([\d.]+)\s*/io;
+; my $rcs_file = $1 if q$RCSfile: template.pl,v $ =~ /RCSfile:\s*([\w.]+)\s*/io;
+
+use strict;
+use warnings;
+use BBDB::Export;
+use BBDB::Export::MailAliases;
+use BBDB::Export::LDIF;
+use BBDB::Export::LDIF4M;
+use BBDB::Export::OLCSV;
+use IO::File;
+
+### Initialize
+print "- Initialize...\n";
+my $exporter;
+
+my $home = $ENV{"HOME"};
+my $bbdb_file = "${home}/.emacs.etc/e2114710_bbdb";
+my $tmpdir = "${home}/tmp";
+
+my $bbdb_utf8 = "${tmpdir}/bbdb.utf8";
+my $tmp_file = "${tmpdir}/BBDB2OL.tmp";
+
+my $ol_file = "${home}/BBDB2OL.csv";
+my $ldap_file = "${home}/BBDB2LDAP.ldif";
+my $ldif_file = "${home}/BBDB2TB.ldif";
+my $ma_file = "${home}/.mail_alias.new";
+
+my $ifh;
+my $ofh;
+
+## Prepare BBDB file as UTF-8.
+print " - Convert BBDB file encoding to utf8\n";
+$ifh = IO::File->new("${bbdb_file}") or die;
+$ofh = IO::File->new("| nkf -wmXZ1 > ${bbdb_utf8}") or die;
+while (<$ifh>) {  print $ofh $_ if /^\[/io; }
+print " - Convert BBDB file encoding to utf8: Done\n";
+close($ofh);
+close($ifh);
+
+
+## export to CSV for Outlook
+print " - Convert BBDB file to CSV for Outlook\n";
+$exporter = BBDB::Export::OLCSV->new(
+				     {
+				      bbdb_file => ${bbdb_utf8},
+				      output_file => ${tmp_file},
+				      dc => "dc=nodomain",
+				     }
+				    );
+$exporter->export();
+#						  # Convert to SJIS
+$ifh = IO::File->new("${tmp_file}") or die;
+$ofh = IO::File->new("| nkf -WsxZ1 > ${ol_file}") or die;
+while (<$ifh>) { print $ofh $_; }
+close($ofh);
+close($ifh);
+print " - Convert BBDB file to CSV for Outlook: Done\n";
+
+###  export to LDIF for LDAP
+print " - Convert BBDB file to LDIF for Plain LDAP\n";
+$exporter = BBDB::Export::LDIF->new(
+				    {
+				     bbdb_file => ${bbdb_utf8},
+				     output_file => ${tmp_file},
+				     dc => "dc=nodomain",
+				    }
+				   );
+$exporter->export();
+#						  # Don't convert: UTF-8
+$ifh = IO::File->new("${tmp_file}") or die;
+$ofh = IO::File->new("> ${ldap_file}") or die;
+while (<$ifh>) {
+  chomp;
+  $_ = "mail: " . lc $1				  # Mail Address #1
+    if /^mail: (.*)$/;
+  print $ofh $_ . "\n";
+}
+close($ofh);
+close($ifh);
+print " - Convert BBDB file to LDIF for Plain LDAP: Done\n";
+
+###  export to LDIF for Mozilla (like Thunderbird, ...)
+print " - Convert BBDB file to LDIF for Mozilla\n";
+$exporter = BBDB::Export::LDIF4M->new(
+				      {
+				       bbdb_file => ${bbdb_utf8},
+				       output_file => ${tmp_file},
+				       dc => "dc=nodomain",
+				      }
+				     );
+$exporter->export();
+#						  # Don't convert: UTF-8
+$ifh = IO::File->new("${tmp_file}") or die;
+$ofh = IO::File->new("> ${ldif_file}") or die;
+while (<$ifh>) {
+  chomp;
+  $_ = "mail: " . lc $1				  # Mail Address #1
+    if /^mail: (.*)$/;
+  $_ = "mozillaSecondEmail: " . lc $1		  # Mail Address #2
+    if /^mozillaSecondEmail: (.*)$/;
+  print $ofh $_ . "\n";
+}
+close($ofh);
+close($ifh);
+print " - Convert BBDB file to LDIF for Mozilla: Done\n";
+
+## Create .mail_aliases
+print " - Convert BBDB file to Mail Aliases\n";
+$exporter = BBDB::Export::MailAliases->new(
+					   {
+					    bbdb_file   => ${bbdb_utf8},
+					    output_file => ${ma_file},
+					   }
+					  );
+$exporter->export();
+print " - Convert BBDB file to Mail Aliases: Done\n";
+
+### Sweep
+print "- Closing to...\n";
+unlink($bbdb_utf8);
+unlink($tmp_file);
+
+# end of
+1;

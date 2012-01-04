@@ -10,7 +10,7 @@ WriteMakefile(
   AUTHOR    => 'Alex\ White\ \<VVu\@geekfarm\.org\>',
   ABSTRACT  => 'export\ data\ from\ The\ Insidious\ Big\ Brother\ Database\.',
   VERSION   => '0.015',
-  EXE_FILES => [ qw(bin/bbdb-export) ],
+  EXE_FILES => [ qw(bin/bbdb-export bin/bbdb2out) ],
   (eval { ExtUtils::MakeMaker->VERSION(6.31) } ? (LICENSE => 'bsd') : ()),
   PREREQ_PM    => {
     "Test::More" => '0',
